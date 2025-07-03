@@ -51,23 +51,24 @@ button:hover {
     background-color: #0056b3;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+
+table {
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 1rem;
 }
 
-li {
-    background: #eee;
-    margin: 0.5rem 0;
+th, td {
+    border: 1px solid #ddd;
     padding: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 4px;
+    text-align: left;
 }
 
-li button {
-    margin-left: 1rem;
+th {
+    background-color: #f5f5f5;
+}
+
+.delete-btn {
     background-color: #dc3545;
     color: #fff;
     border: none;
@@ -76,7 +77,7 @@ li button {
     cursor: pointer;
 }
 
-li button:hover {
+.delete-btn:hover {
     background-color: #c82333;
 }
 

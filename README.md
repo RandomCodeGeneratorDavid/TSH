@@ -1,6 +1,7 @@
 # TSH Workout Tracker
 
-A simple web-based application to log workouts on your phone.
+A simple web-based application to log workouts on your phone. Each entry is
+stored locally in your browser and shown in a table for easy review.
 
 ## Running the app
 
@@ -12,3 +13,13 @@ Alternatively, serve the files with a simple HTTP server and visit `http://local
 ```bash
 python3 -m http.server
 ```
+
+### Columns in the log
+
+| Column | Meaning |
+| ------ | ------- |
+| **Date** | The selected calendar date with day of the week |
+| **Exercise** | Name of the exercise performed |
+| **Weight** | Weight used for the set |
+| **Reps** | Number of repetitions |
+| **Set** | Automatically increments for each set of the same exercise on the same day |
