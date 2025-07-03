@@ -1,9 +1,17 @@
 const form = document.getElementById('workout-form');
 const tableBody = document.querySelector('#workout-table tbody');
+const modal = document.getElementById('progress-modal');
+const closeModalBtn = document.getElementById('close-modal');
+const progressText = document.getElementById('progress-text');
+let chart;
 
 function loadWorkouts() {
     const items = JSON.parse(localStorage.getItem('workouts') || '[]');
     items.forEach(addRowToDOM);
+}
+
+function getWorkouts() {
+    return JSON.parse(localStorage.getItem('workouts') || '[]');
 }
 
 function saveWorkouts() {
@@ -51,6 +59,30 @@ function addRowToDOM(item) {
     tableBody.appendChild(tr);
 }
 
+function showProgress(exerciseName, history) {
+    history.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const labels = history.map(h => formatDateWithDay(h.date));
+    const data = history.map(h => Number(h.weight) || 0);
+    progressText.textContent = `Progress for ${exerciseName}: ${data[0]} → ${data[data.length - 1]} kg`;
+
+    if (chart) chart.destroy();
+    const ctx = document.getElementById('progress-chart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{ label: 'Weight', data: data, borderColor: '#007bff', fill: false }]
+        },
+        options: { responsive: false }
+    });
+
+    modal.hidden = false;
+}
+
+closeModalBtn.addEventListener('click', () => {
+    modal.hidden = true;
+});
+
 form.addEventListener('submit', e => {
     e.preventDefault();
     const date = document.getElementById('date').value;
@@ -65,6 +97,11 @@ form.addEventListener('submit', e => {
             if (s >= setNum) setNum = s + 1;
         }
     });
+
+    const history = getWorkouts().filter(w => w.exercise.toLowerCase() === exercise.toLowerCase());
+    if (history.length > 0) {
+        showProgress(exercise, history);
+    }
 
     const item = { date, exercise, weight, reps, set: setNum };
     addRowToDOM(item);
